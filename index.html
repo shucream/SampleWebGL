@@ -3,8 +3,54 @@
 <html>
     <head>
         <title>WebGL sample</title>
+
+        <script src="main.js" ></script>
+
+        <script type='glsl' id='vs'> 
+            // VertexShader
+            //     頂点データを座標に起こして、WebGLに渡す？
+
+            // 演算精度の宣言　
+            precision mediump float;
+
+            // uniform: 受け取る定数
+            uniform mat4 modelviewMatrix; // 平行移動回転行列
+            uniform mat4 projectionMatrix; // 錐台(frustum)変換行列
+
+            // attribute: 受け取る頂点データ
+            attribute vec3 vertex; // 頂点座標
+            attribute vec3 normal; // 頂点の法線ベクトル
+
+            // varying: fsに送るデータ
+            varying vec3 e_normal; // 法線ベクトルと平行移動回転行列との積
+
+            void main() {
+                // 頂点座標をクリッピング座標系に変換する カメラから見た状態？
+                gl_position = projectionMatrix * modelviewMatrix * vec4(vertex, 1.0);
+                // 法線ベクトルを世界座標系に変換する
+                e_normal = vec3(modelviewMatrix * vec4(normal, 0.0))
+            }
+        </script>
+
+        <script type="glsl" id="fs">
+            precision mediump float;
+            // varying: vsから受け取るデータ
+            varying vec3 e_normal; // 法線ベクトルと平行移動回転行列との積
+
+            void main() {
+                // 法線ベクトルを正規化
+                vec3 n = normalize(e_normal);
+
+                // 法線ベクトルと光ベクトル(-1, 1, 1)との内積で明るさを決定
+                float l = abs(dot(n, normalize(vec3(-1, 1, 1))));
+
+                // このピクセルの色をRGBA(1,1,1,1)に設定
+                gl_FragColor = vec4(1, 1, 1, 1.0);
+            }
+        </script>
     </head>
 
     <body>
+        <canvas id="canvas" width="512" height="512"></canvas>
     </body>
 </html>
