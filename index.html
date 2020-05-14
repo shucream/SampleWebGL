@@ -46,7 +46,7 @@
                 float l = abs(dot(n, normalize(vec3(-1, 1, 1))));
 
                 // このピクセルの色をRGBA(1,1,1,1)に設定
-                gl_FragColor = vec4(1, 1, 1, 1.0);
+                gl_FragColor = vec4(l, l, l, 1.0);
             }
         </script>
     </head>
