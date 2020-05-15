@@ -66,11 +66,11 @@
         let frame = 0;
         const drawFrame = () => {
             frame++;
-            // frustum行列の生成
-            const proj_mat = mat4.create();
+            // frustum行列
+            let proj_mat = mat4.create();
             mat4.frustum(proj_mat, -1, 1, -1, 1, 3, 10);
-            // 移動回転行列の生成
-            const mv_mat = mat4.create();
+            // 移動回転行列
+            let mv_mat = mat4.create();
             mat4.translate(mv_mat, mv_mat, [0, 0, -6]);
             mat4.rotate(mv_mat, mv_mat, frame * 0.01, [0, 1, 0]);
 
@@ -99,7 +99,7 @@
 
             // 今まで設定した内容でWebGLに送信
             gl.drawArrays(gl.TRIANGLES, 0, 3);
-            setTimeout(drawFrame, 16);
+            setTimeout(drawFrame, 33); // 30fps
         }
     }
 )();
